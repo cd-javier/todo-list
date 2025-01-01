@@ -30,6 +30,7 @@ Pseudocode
         Constructor:
             - Name
             - Description (default empty)
+            - Due date (date)
             - Category (default empty)
             - Priority (default 0)
             - Notes (default empty)
