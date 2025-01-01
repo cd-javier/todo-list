@@ -3,7 +3,14 @@ import { format } from "date-fns";
 
 function TodoList() {
   // Array where the To Do items are stored
-  const todoArr = [];
+    let todoArr = []
+
+    // To load the local storage
+    //
+    // if(localStorage.todoList) {
+    //     todoArr = JSON.parse(localStorage.todoList)
+    // }
+
 
   // To get the list without being able to modify it
   function getList() {
@@ -29,10 +36,10 @@ function TodoList() {
 
   // To Do items
   class TodoItem extends ChecklistItem {
-    constructor(name, description, category, priority, notes) {
+    constructor(name, description, project, priority, notes) {
       super(name);
       this.description = description;
-      this.category = category || "general";
+      this.project = project || "general";
       this.priority = priority || 0;
       this.notes = notes;
       this.checklist = [];
@@ -59,7 +66,7 @@ function TodoList() {
     name,
     description,
     dueDate,
-    category,
+    project,
     priority,
     notes
   ) {
@@ -67,7 +74,7 @@ function TodoList() {
       name,
       description,
       dueDate,
-      category,
+      project,
       priority,
       notes
     );
