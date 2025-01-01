@@ -1,1 +1,224 @@
 @import "../node_modules/modern-normalize/modern-normalize.css";
+
+:root {
+  --bg-neutral: #edeff2;
+  --neutral: #f7f9fc;
+  --neutral-black: #06152c;
+  --primary: #83b0f5;
+
+  --priority-high: #f59d83;
+  --priority-medium: #f5ed83;
+  --priority-low: #b4f583;
+}
+
+body {
+  background-color: var(--bg-neutral);
+  color: var(--neutral-black);
+}
+
+.wrapper {
+  max-width: 1024px;
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.todo-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.todo-item {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 8px;
+
+  padding-top: calc(1rem - 8px);
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.priority-high {
+  border-top: 8px solid var(--priority-high);
+}
+.priority-medium {
+  border-top: 8px solid var(--priority-medium);
+}
+.priority-low {
+  border-top: 8px solid var(--priority-low);
+}
+
+.todo-heading,
+.todo-subheading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.category {
+  text-transform: uppercase;
+}
+
+.category,
+.priority,
+.due-date,
+.checklist,
+.notes {
+  font-size: 0.75rem;
+}
+
+.priority,
+.due-date,
+.checklist,
+.notes {
+  font-size: 0.75rem;
+  font-weight: 200;
+}
+
+.category::before {
+  content: "#";
+}
+
+.priority::before {
+  content: "Priority: ";
+}
+
+.checklist,
+.notes {
+  position: relative;
+  background-color: var(--neutral);
+  padding: 2.25rem 1rem 1rem 1rem;
+  border-radius: 0.24rem;
+}
+
+.checklist::before,
+.notes::before {
+  position: absolute;
+  top: 1rem;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.checklist::before {
+  content: "Checklist";
+}
+.notes::before {
+  content: "Notes";
+}
+
+.checklist ul {
+  margin: 0;
+  padding: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.checklist li {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.buttons {
+  display: grid;
+  grid-template: "edit edit" ". .";
+  gap: 0.5rem;
+}
+
+.edit-btn {
+  grid-area: edit;
+}
+
+button {
+  appearance: none;
+  border: none;
+  cursor: pointer;
+
+  background-color: var(--primary);
+  border-radius: 4px;
+  padding: 0.25rem;
+
+  color: white;
+  font-weight: 200;
+}
+
+.modal {
+  display: none; 
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+.modal form {
+  margin: 15% auto;
+  max-width: 500px;
+
+  background-color: white;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.modal .title {
+  text-align: center;
+}
+
+.modal form ul {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.modal input,
+.modal textarea,
+.modal select {
+  outline: none;
+  border: 1px solid var(--bg-neutral);
+  background-color: var(--neutral);
+
+  padding: 0.5rem;
+  border-radius: 4px;
+
+  font-weight: 200;
+}
+
+.modal li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.modal textarea {
+  resize: none;
+  height: 5rem;
+}
+
+.modal-buttons {
+    display: flex;
+    /* flex-direction: column; */
+    gap: 0.5rem;
+}
+
+.modal-buttons button {
+    flex: 1;
+}

@@ -36,10 +36,10 @@ function TodoList() {
 
   // To Do items
   class TodoItem {
-    constructor(name, description, project, priority, notes) {
+    constructor(name, description, category, priority, notes) {
       this.name = name;
       this.description = description;
-      this.project = project || "general";
+      this.category = category || "general";
       this.priority = priority || 0;
       this.notes = notes;
       this.checklist = [];
@@ -53,7 +53,7 @@ function TodoList() {
 
     // Returns the due date formatted
     get dueDate() {
-      return format(this._dueDate, "dd MMM yyyy");
+      return format(this._dueDate, "eee dd MMM yyyy");
     }
 
     // Adds an item to the checklist
@@ -69,7 +69,7 @@ function TodoList() {
     setDone() {
         this.status = "Done"
     }
-    
+
     setToDo() {
         this.status = "To do"
     }
@@ -80,7 +80,7 @@ function TodoList() {
     name,
     description,
     dueDate,
-    project,
+    category,
     priority,
     notes
   ) {
@@ -88,7 +88,7 @@ function TodoList() {
       name,
       description,
       dueDate,
-      project,
+      category,
       priority,
       notes
     );
