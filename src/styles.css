@@ -176,6 +176,8 @@ button {
   color: var(--primary);
   font-size: 0.75rem;
   font-weight: 100;
+
+  cursor:pointer;
 }
 
 .modal {
@@ -227,6 +229,30 @@ form ul {
 
 .modal form ul .one-col {
   grid-column-end: span 1;
+}
+
+form select {
+  appearance: none;
+}
+
+.select-wrapper {
+  position: relative;
+}
+
+.select-wrapper::after {
+  content: " ▼";
+  font-size: 0.5rem;
+  position: absolute;
+  right: 1rem;
+  top: 60%;
+}
+
+form select option {
+  font-family: inherit;
+}
+
+form select, form select option {
+  text-rendering: optimizeLegibility;
 }
 
 form input,

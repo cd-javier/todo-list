@@ -362,6 +362,7 @@ function renderEditingForm(targetCard, item, index) {
 
   // Priority
   const editPriority = document.createElement("li");
+  editPriority.classList.add("select-wrapper")
   const editPriorityLabel = document.createElement("label");
   editPriorityLabel.setAttribute("for", "edit-priority");
   editPriorityLabel.textContent = "Priority";
