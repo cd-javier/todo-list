@@ -170,7 +170,6 @@ button {
 }
 
 .modal {
-  display: none;
   position: fixed;
   z-index: 1;
   left: 0;
@@ -200,9 +199,17 @@ button {
   margin: 0;
   list-style-type: none;
 
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 1rem;
+}
+
+.modal form ul > * {
+  grid-column-end: span 2;
+}
+
+.modal form ul .one-col {
+  grid-column-end: span 1;
 }
 
 .modal input,
@@ -210,6 +217,19 @@ button {
 .modal select {
   outline: none;
   border: 1px solid var(--bg-neutral);
+  background-color: var(--neutral);
+
+  padding: 0.5rem;
+  border-radius: 4px;
+
+  font-weight: 200;
+}
+
+.modal input:focus,
+.modal textarea:focus,
+.modal select:focus {
+  outline: none;
+  border: 1px solid var(--primary);
   background-color: var(--neutral);
 
   padding: 0.5rem;

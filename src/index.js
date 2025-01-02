@@ -7,9 +7,19 @@ const DomNodes = (function () {
   const todoList = document.getElementById("todo");
   const doingList = document.getElementById("doing");
   const doneList = document.getElementById("done");
-  const newBtn = document.getElementById("new-btn");
+  const newModal = document.getElementById("new-item-modal");
+  const newForm = document.forms["new-item-form"];
+  const newCancelBtn = document.getElementById("new-cancel-btn");
 
-  return { wrapper, todoList, doingList, doneList };
+  return {
+    wrapper,
+    todoList,
+    doingList,
+    doneList,
+    newModal,
+    newForm,
+    newCancelBtn,
+  };
 })();
 
 // Creates a new TodoList and uses methods
@@ -222,6 +232,27 @@ function changeStatus(e) {
 // -------------------------------
 //         Item Creation
 // -------------------------------
+function toggleNewItemModal() {
+  DomNodes.newModal.classList.toggle("hidden");
+}
+
+function createNewItem(e) {
+  e.preventDefault();
+  const form = DomNodes.newForm;
+
+  const name = form["item-name"].value;
+  const description = form["description"].value;
+  const dueDate = form["due-date"].value || new Date();
+  const category = form["category"].value;
+  const priority = Number(form["priority"].value);
+  const notes = form["notes"].value;
+
+  myToDo.createTodoItem(name, description, dueDate, category, priority, notes);
+
+  form.reset();
+  toggleNewItemModal();
+  renderTodos();
+}
 
 // ---------------------------------
 // Init - Finalize - Event Listeners
@@ -242,6 +273,11 @@ function finalize() {
 function EventListeners() {
   document.addEventListener("click", showDetailsListener);
   document.addEventListener("click", changeStatus);
+  document
+    .getElementById("new-btn")
+    .addEventListener("click", toggleNewItemModal);
+  DomNodes.newForm.addEventListener("submit", createNewItem);
+  DomNodes.newCancelBtn.addEventListener("click", toggleNewItemModal);
 }
 
 window.addEventListener("DOMContentLoaded", init);
