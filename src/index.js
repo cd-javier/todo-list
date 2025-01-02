@@ -2,11 +2,12 @@ import "./styles.css";
 import { TodoList } from "./todolist";
 
 const DomNodes = (function () {
+  const wrapper = document.getElementById("wrapper")
   const todoList = document.getElementById("todo");
   const doingList = document.getElementById("doing");
   const doneList = document.getElementById("done");
 
-  return { todoList, doingList, doneList };
+  return { wrapper, todoList, doingList, doneList };
 })();
 
 const myToDo = TodoList();
@@ -16,7 +17,11 @@ myToDo.createTodoItem(
   "10-20-20",
   "work",
   0,
-  "no notes"
+  "no notes",
+  [
+    { name: "thing", completed: false },
+    { name: "other thing", completed: true },
+  ]
 );
 myToDo.createTodoItem(
   "do something 2",
@@ -24,18 +29,20 @@ myToDo.createTodoItem(
   "10-20-20",
   "play",
   1,
-  "no notes"
+  "here are a few notes"
 );
 myToDo.createTodoItem(
   "do something 2",
   "you have to do something",
   "10-20-20",
   "home",
-  2,
-  "no notes"
+  2
 );
 myToDo.getList()[1].addChecklistItem("do something");
 myToDo.getList()[1].addChecklistItem("do something 2");
+myToDo.getList()[1].checklist[1].toggleComplete();
+myToDo.getList()[1].setDoing();
+myToDo.getList()[2].setDone();
 
 // Helper function to create divs more easily
 function createDiv(cssClass, text) {
@@ -103,31 +110,48 @@ function createDomCard(obj, index) {
       const li = document.createElement("li");
       const input = document.createElement("input");
       input.setAttribute("type", "checkbox");
-      input.id = index + "-" + j
+      if (item.completed) {
+        input.setAttribute("checked", true);
+      }
+      input.id = index + "-" + j;
       const label = document.createElement("label");
       label.setAttribute("for", index + "-" + j);
       label.textContent = item.name;
-      li.append(input, label)
+      li.append(input, label);
 
       ul.appendChild(li);
     });
-    checklist.appendChild(ul)
+    checklist.appendChild(ul);
     details.appendChild(checklist);
   }
 
-  const notes = createDiv("notes", obj.notes);
-  details.appendChild(notes);
+  if (obj.notes) {
+    const notes = createDiv("notes", obj.notes);
+    details.appendChild(notes);
+  }
 
   // Buttons
   const buttons = createDiv("buttons");
   const editBtn = document.createElement("button");
   editBtn.classList.add("edit-btn");
-  editBtn.textContent = "edit";
-  // ** Need to edit this logic **
+  editBtn.textContent = "Edit";
+
   const prevBtn = document.createElement("button");
-  prevBtn.textContent = "<<";
   const nextBtn = document.createElement("button");
-  nextBtn.textContent = ">>";
+  switch (obj.status) {
+    case "todo":
+      prevBtn.textContent = "Doing";
+      nextBtn.textContent = "Done";
+      break;
+    case "doing":
+      prevBtn.textContent = "To Do";
+      nextBtn.textContent = "Done";
+      break;
+    case "done":
+      prevBtn.textContent = "To Do";
+      nextBtn.textContent = "Doing";
+      break;
+  }
   buttons.append(editBtn, prevBtn, nextBtn);
   details.appendChild(buttons);
 
@@ -136,6 +160,7 @@ function createDomCard(obj, index) {
   return todoCard;
 }
 
+// Function to sort and render the todo items
 function renderTodos() {
   const domArr = myToDo
     .getList()

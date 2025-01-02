@@ -34,14 +34,15 @@ function TodoList() {
 
   // To Do items
   class TodoItem {
-    constructor(name, description, category, priority, notes) {
+    constructor(name, description, dueDate, category, priority = 0, notes, checklist = []) {
       this.name = name;
       this.description = description;
+      this._dueDate = new Date(dueDate);
       this.category = category || "general";
-      this.priority = priority || 0;
+      this.priority = priority;
       this.notes = notes;
-      this.checklist = [];
-      this.status = "To do";
+      this.checklist = checklist;
+      this.status = "todo";
     }
 
     // Creates a due date
@@ -61,15 +62,15 @@ function TodoList() {
 
     // Modifies the status of the item
     setDoing() {
-      this.status = "Doing";
+      this.status = "doing";
     }
 
     setDone() {
-      this.status = "Done";
+      this.status = "done";
     }
 
     setToDo() {
-      this.status = "To do";
+      this.status = "todo";
     }
   }
 
@@ -80,7 +81,8 @@ function TodoList() {
     dueDate,
     category,
     priority,
-    notes
+    notes,
+    checklist
   ) {
     const item = new TodoItem(
       name,
@@ -88,7 +90,8 @@ function TodoList() {
       dueDate,
       category,
       priority,
-      notes
+      notes,
+      checklist
     );
     todoArr.push(item);
   }
