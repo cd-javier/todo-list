@@ -183,8 +183,10 @@ function renderTodos() {
 
 function showDetails(e) {
   const targetCard = e.target.closest(".todo-item");
-  const cardDetails = targetCard.getElementsByClassName("todo-details");
-  cardDetails[0].classList.toggle("hidden")
+  if (targetCard) {
+    const cardDetails = targetCard.getElementsByClassName("todo-details");
+    cardDetails[0].classList.toggle("hidden");
+  }
 }
 
 renderTodos();
