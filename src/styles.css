@@ -194,14 +194,22 @@ button {
   text-align: center;
 }
 
-.modal form ul {
+form ul {
   padding: 0;
   margin: 0;
   list-style-type: none;
+}
 
+.modal form ul {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
+}
+
+.todo-item form ul {
+  display:flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .modal form ul > * {
@@ -212,9 +220,9 @@ button {
   grid-column-end: span 1;
 }
 
-.modal input,
-.modal textarea,
-.modal select {
+form input,
+form textarea,
+form select {
   outline: none;
   border: 1px solid var(--bg-neutral);
   background-color: var(--neutral);
@@ -225,28 +233,28 @@ button {
   font-weight: 200;
 }
 
-.modal input:focus,
-.modal textarea:focus,
-.modal select:focus {
-  outline: none;
+form input:focus,
+form textarea:focus,
+form select:focus {
   border: 1px solid var(--primary);
-  background-color: var(--neutral);
-
-  padding: 0.5rem;
-  border-radius: 4px;
-
-  font-weight: 200;
 }
 
-.modal li {
+form li {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
 }
 
-.modal textarea {
+form textarea {
   resize: none;
   height: 5rem;
+}
+
+.todo-item form input,
+.todo-item form select,
+.todo-item form textarea,
+.todo-item form label {
+  font-size: 0.75rem;
 }
 
 .modal-buttons {

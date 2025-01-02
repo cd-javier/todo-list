@@ -1,5 +1,6 @@
 import "./styles.css";
 import { TodoList } from "./todolist";
+import { format } from "date-fns";
 
 // Selects necessary nodes on the DOM
 const DomNodes = (function () {
@@ -86,27 +87,27 @@ function createDomCard(obj, index) {
     details.appendChild(description);
   }
   // Checklist
-  if (obj.checklist.length !== 0) {
-    const checklist = createDiv("checklist");
-    const ul = document.createElement("ul");
-    obj.checklist.forEach((item, j) => {
-      const li = document.createElement("li");
-      const input = document.createElement("input");
-      input.setAttribute("type", "checkbox");
-      if (item.completed) {
-        input.setAttribute("checked", true);
-      }
-      input.id = index + "-" + j;
-      const label = document.createElement("label");
-      label.setAttribute("for", index + "-" + j);
-      label.textContent = item.name;
-      li.append(input, label);
+  // if (obj.checklist.length !== 0) {
+  //   const checklist = createDiv("checklist");
+  //   const ul = document.createElement("ul");
+  //   obj.checklist.forEach((item, j) => {
+  //     const li = document.createElement("li");
+  //     const input = document.createElement("input");
+  //     input.setAttribute("type", "checkbox");
+  //     if (item.completed) {
+  //       input.setAttribute("checked", true);
+  //     }
+  //     input.id = index + "-" + j;
+  //     const label = document.createElement("label");
+  //     label.setAttribute("for", index + "-" + j);
+  //     label.textContent = item.name;
+  //     li.append(input, label);
 
-      ul.appendChild(li);
-    });
-    checklist.appendChild(ul);
-    details.appendChild(checklist);
-  }
+  //     ul.appendChild(li);
+  //   });
+  //   checklist.appendChild(ul);
+  //   details.appendChild(checklist);
+  // }
 
   if (obj.notes) {
     const notes = createDiv("notes", obj.notes);
@@ -202,7 +203,7 @@ function showDetails(targetCard) {
 // Applies showDetails in an event listener
 function showDetailsListener(e) {
   const targetCard = e.target.closest(".todo-item");
-  if (targetCard) {
+  if (targetCard && !targetCard.dataset.editing) {
     showDetails(targetCard);
   }
 }
@@ -239,7 +240,7 @@ function toggleNewItemModal() {
 function showNewItemModal(e) {
   const target = e.target.closest("#new-btn");
   if (target) {
-    toggleNewItemModal()
+    toggleNewItemModal();
   }
 }
 
@@ -259,6 +260,145 @@ function createNewItem(e) {
   form.reset();
   toggleNewItemModal();
   renderTodos();
+}
+
+// -------------------------------
+//          Item Editing
+// -------------------------------
+function enableEditing(e) {
+  const targetCard = e.target.closest(".todo-item");
+  const cardIndex = targetCard ? targetCard.dataset.index : null;
+  const targetBtn = e.target.closest(".edit-btn");
+
+  if (targetBtn && cardIndex !== null) {
+    const item = myToDo.getList()[cardIndex];
+    renderEditingForm(targetCard, item);
+  }
+}
+
+// Creates a form inside of the card to edit it
+function renderEditingForm(targetCard, item) {
+  targetCard.textContent = "";
+  targetCard.dataset.editing = true;
+
+  const editForm = document.createElement("form");
+  const ul = document.createElement("ul");
+
+  // Item name
+  const editName = document.createElement("li");
+  const editNameLabel = document.createElement("label");
+  editNameLabel.setAttribute("for", "edit-item-name");
+  editNameLabel.textContent = "Item Name";
+  editName.appendChild(editNameLabel);
+  const editNameInput = document.createElement("input");
+  editNameInput.id = "edit-item-name";
+  editNameInput.setAttribute("name", "item-name");
+  editNameInput.value = item.name;
+  editName.appendChild(editNameInput);
+  ul.appendChild(editName);
+
+  // Description
+  const editDescription = document.createElement("li");
+  const editDescriptionLabel = document.createElement("label");
+  editDescriptionLabel.setAttribute("for", "edit-description");
+  editDescriptionLabel.textContent = "Description";
+  editDescription.appendChild(editDescriptionLabel);
+  const editDescriptionInput = document.createElement("textarea");
+  editDescriptionInput.id = "edit-description";
+  editDescriptionInput.setAttribute("name", "description");
+  editDescriptionInput.textContent = item.description;
+  editDescription.appendChild(editDescriptionInput);
+  ul.appendChild(editDescription);
+
+  // Category
+  const editCategory = document.createElement("li");
+  const editCategoryLabel = document.createElement("label");
+  editCategoryLabel.setAttribute("for", "edit-category");
+  editCategoryLabel.textContent = "Category";
+  editCategory.appendChild(editCategoryLabel);
+  const editCategoryInput = document.createElement("input");
+  editCategoryInput.id = "edit-category";
+  editCategoryInput.setAttribute("name", "category");
+  editCategoryInput.value = item.category;
+  editCategory.appendChild(editCategoryInput);
+  ul.appendChild(editCategory);
+
+  // Priority
+  const editPriority = document.createElement("li");
+  const editPriorityLabel = document.createElement("label");
+  editPriorityLabel.setAttribute("for", "edit-priority");
+  editPriorityLabel.textContent = "Priority";
+  editPriority.appendChild(editPriorityLabel);
+
+  const editPrioritySelection = document.createElement("select");
+  editPrioritySelection.id = "edit-priority";
+  editPrioritySelection.setAttribute("name", "priority");
+  const optionPriorityLow = document.createElement("option");
+  optionPriorityLow.setAttribute("value", 0);
+  optionPriorityLow.textContent = "Low";
+  const optionPriorityMedium = document.createElement("option");
+  optionPriorityMedium.setAttribute("value", 1);
+  optionPriorityMedium.textContent = "Medium";
+  const optionPriorityHigh = document.createElement("option");
+  optionPriorityHigh.setAttribute("value", 2);
+  optionPriorityHigh.textContent = "High";
+  switch (item.priority) {
+    case 0:
+      optionPriorityLow.setAttribute("selected", "selected");
+      break;
+    case 1:
+      optionPriorityMedium.setAttribute("selected", "selected");
+      break;
+    case 2:
+      optionPriorityHigh.setAttribute("selected", "selected");
+      break;
+  }
+  editPrioritySelection.append(
+    optionPriorityLow,
+    optionPriorityMedium,
+    optionPriorityHigh
+  );
+  editPriority.appendChild(editPrioritySelection);
+  ul.appendChild(editPriority);
+
+  // Due date
+  const editDueDate = document.createElement("li");
+  const editDueDateLabel = document.createElement("label");
+  editDueDateLabel.setAttribute("for", "edit-due-date");
+  editDueDateLabel.textContent = "Due Date";
+  editDueDate.appendChild(editDueDateLabel);
+  const editDueDateInput = document.createElement("input");
+  editDueDateInput.setAttribute("type", "date");
+  editDueDateInput.id = "edit-due-date";
+  editDueDateInput.setAttribute("name", "due-date");
+  editDueDateInput.valueAsDate = new Date(format(item.dueDate, "yyyy-MM-dd"));
+  editDueDate.appendChild(editDueDateInput);
+  ul.appendChild(editDueDate);
+
+  // Notes
+  const editNotes = document.createElement("li");
+  const editNotesLabel = document.createElement("label");
+  editNotesLabel.setAttribute("for", "edit-notes");
+  editNotesLabel.textContent = "Notes";
+  editNotes.appendChild(editNotesLabel);
+  const editNotesInput = document.createElement("textarea");
+  editNotesInput.id = "edit-notes";
+  editNotesInput.setAttribute("name", "notes");
+  editNotesInput.textContent = item.notes;
+  editNotes.appendChild(editNotesInput);
+  ul.appendChild(editNotes);
+
+  // Buttons
+  const cancelBtn = document.createElement("button");
+  cancelBtn.setAttribute("type", "button");
+  cancelBtn.textContent = "Cancel";
+  ul.appendChild(cancelBtn);
+  const saveBtn = document.createElement("button");
+  saveBtn.textContent = "Save";
+  ul.appendChild(saveBtn);
+
+  editForm.appendChild(ul);
+  targetCard.appendChild(editForm);
 }
 
 // ---------------------------------
@@ -283,7 +423,8 @@ function EventListeners() {
   document.addEventListener("click", showNewItemModal);
   DomNodes.newForm.addEventListener("submit", createNewItem);
   DomNodes.newCancelBtn.addEventListener("click", toggleNewItemModal);
+  document.addEventListener("click", enableEditing);
 }
 
 window.addEventListener("DOMContentLoaded", init);
-window.addEventListener("unload", finalize);
+window.addEventListener("visibilitychange", finalize);
