@@ -13,7 +13,8 @@ All to do items should be objects that contain the following:
     Notes: String.
     Completed: Boolean (default false) (!)
 
-Pseudocode
+## Pseudocode
+### To Do List Module
 
     Function TodoList
 
@@ -76,3 +77,72 @@ Pseudocode
             getListItem
             createTooItem
             deleteItem
+
+### UI Module
+
+    IIFE DomNodes
+        Selects three different lists from the DOM
+        Returns each element
+
+    Variable myToDo
+        Calls ToDoList function
+    
+    Function createDomCard
+        Takes one variable object
+        Creates an element todoCard
+            Assigns class todo-item
+
+        Creates an element heading
+            Assigns class .todo-heading
+        Creates an element title
+            Assigns class .title
+            Sets textContent
+        Creates an element category
+            Assigns class .category
+        Appends title and category to heading
+
+        Creates an element subheading
+            Assigns class .todo-subheading
+        Creates an element priority
+            Assigns class .priority
+            Sets textContent
+        Creates an element dueDate
+            Assigns class .due-date
+            Sets textContent
+        Appends priority and dueDate to subheading
+
+        Creates an element description
+            Assigns class .description
+            Sets textContent
+
+        Creates an element details
+            Assigns class .details
+            Assigns class .hidden
+            
+        <!-- To complete later on -->
+        Creates an element checklist
+        
+        Creates an element notes
+            Assigns class notes
+            Sets textContent
+
+        Creates an element buttons
+            Assigns class buttons
+        Creates an element editBtn
+            Assigns class editBtn
+        Creates an element doingBtn
+        Creates an element doneBtn
+        Appends three buttons to buttons
+
+        Appends to details
+            checklist
+            notes
+            buttons
+
+        Appends to todoCard
+            heading
+            subheading
+            description
+            details
+
+        Returns todoCard
