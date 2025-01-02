@@ -236,6 +236,13 @@ function toggleNewItemModal() {
   DomNodes.newModal.classList.toggle("hidden");
 }
 
+function showNewItemModal(e) {
+  const target = e.target.closest("#new-btn");
+  if (target) {
+    toggleNewItemModal()
+  }
+}
+
 function createNewItem(e) {
   e.preventDefault();
   const form = DomNodes.newForm;
@@ -273,9 +280,7 @@ function finalize() {
 function EventListeners() {
   document.addEventListener("click", showDetailsListener);
   document.addEventListener("click", changeStatus);
-  document
-    .getElementById("new-btn")
-    .addEventListener("click", toggleNewItemModal);
+  document.addEventListener("click", showNewItemModal);
   DomNodes.newForm.addEventListener("submit", createNewItem);
   DomNodes.newCancelBtn.addEventListener("click", toggleNewItemModal);
 }
