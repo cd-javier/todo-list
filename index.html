@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do List</title>
+<script defer src="main.js"></script></head>
+
+<body>
+
+    <div class="wrapper">
+        <div class="todo-list" id="todo">
+        </div>
+        <div class="todo-list" id="doing">
+        </div>
+        <div class="todo-list" id="done">
+        </div>
+    </div>
+
+    <div id="new-item-modal" class="modal hidden">
+        <form id="new-item-form">
+            <div class="title">New Item</div>
+            <ul>
+                <li>
+                    <label for="new-name">Item name</label>
+                    <input type="text" name="item-name" id="new-name" required>
+                    <span></span>
+                </li>
+                <li>
+                    <label for="new-description">Description</label>
+                    <textarea name="description" id="new-description"></textarea>
+                </li>
+                <li>
+                    <label for="new-category">Category</label>
+                    <input type="text" name="category" id="new-category">
+                </li>
+                <li class="one-col">
+                    <label for="priority">Priority</label>
+                    <select name="priority" id="priority">
+                        <option value="0">Low</option>
+                        <option value="1">Medium</option>
+                        <option value="2">High</option>
+                    </select>
+                </li>
+                <li class="one-col">
+                    <label for="new-due-date">Due date</label>
+                    <input type="date" name="due-date" id="new-due-date">
+                </li>
+                <li>
+                    <label for="new-notes">Notes</label>
+                    <textarea name="notes" id="new-notes"></textarea>
+                </li>
+                <div class="modal-buttons">
+                    <button id="new-cancel-btn" class="cancel-btn" type="button">Cancel</button>
+                    <button id="new-create-btn">Create Item</button>
+                </div>
+
+            </ul>
+        </form>
+    </div>
+
+</body>
+
+</html>
