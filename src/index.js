@@ -204,8 +204,8 @@ function renderTodos() {
 // -------------------------------
 // Function to open up the card and show the details
 function showDetails(targetCard) {
-  const cardDetails = targetCard.getElementsByClassName("todo-details");
-  cardDetails[0].classList.toggle("hidden");
+  const cardDetails = targetCard.querySelector(".todo-details");
+  cardDetails.classList.toggle("hidden");
 }
 
 // Applies showDetails in an event listener
@@ -274,22 +274,24 @@ function createNewItem(e) {
 //          Item Editing
 // -------------------------------
 function enableEditing(e) {
-  const targetCard = e.target.closest(".todo-item");
-  const cardIndex = targetCard ? targetCard.dataset.index : null;
   const targetBtn = e.target.closest(".edit-btn");
-
-  if (targetBtn && cardIndex !== null) {
-    const item = myToDo.getList()[cardIndex];
-    renderEditingForm(targetCard, item);
+  if (targetBtn) {
+    const targetCard = e.target.closest(".todo-item");
+    const cardIndex = targetCard ? targetCard.dataset.index : null;
+    if (cardIndex !== null) {
+      const item = myToDo.getList()[cardIndex];
+      renderEditingForm(targetCard, item, cardIndex);
+    }
   }
 }
 
 // Creates a form inside of the card to edit it
-function renderEditingForm(targetCard, item) {
+function renderEditingForm(targetCard, item, index) {
   targetCard.textContent = "";
   targetCard.dataset.editing = true;
 
   const editForm = document.createElement("form");
+  editForm.id = "edit-item-form";
   const ul = document.createElement("ul");
 
   // Item name
@@ -301,6 +303,7 @@ function renderEditingForm(targetCard, item) {
   const editNameInput = document.createElement("input");
   editNameInput.id = "edit-item-name";
   editNameInput.setAttribute("name", "item-name");
+  editNameInput.setAttribute("required", true);
   editNameInput.value = item.name;
   editName.appendChild(editNameInput);
   ul.appendChild(editName);
@@ -407,6 +410,41 @@ function renderEditingForm(targetCard, item) {
 
   editForm.appendChild(ul);
   targetCard.appendChild(editForm);
+  editForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    submitEditForm(item, index);
+  });
+  cancelBtn.addEventListener("click", function (e) {
+    e.stopPropagation();
+    cancelEditForm(index);
+  });
+}
+
+function submitEditForm(item, index) {
+  const form = document.forms["edit-item-form"];
+
+  const name = form["edit-item-name"].value;
+  const description = form["edit-description"].value;
+  const category = form["edit-category"].value;
+  const priority = Number(form["priority"].value);
+  const dueDate = form["edit-due-date"].value;
+  const notes = form["edit-notes"].value;
+
+  item.name = name;
+  item.description = description;
+  item.category = category;
+  item.priority = priority;
+  item.dueDate = dueDate;
+  item.notes = notes;
+
+  renderTodos();
+  showDetails(document.querySelector(`[data-index="${index}"]`));
+}
+
+function cancelEditForm(index) {
+  debugger;
+  renderTodos();
+  showDetails(document.querySelector(`[data-index="${index}"]`));
 }
 
 // ---------------------------------
