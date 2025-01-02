@@ -51,7 +51,19 @@ function createCardContent(obj, index) {
   // Subheading
   const subheading = createDiv("todo-subheading");
   const priority = createDiv("priority");
+  switch (obj.priority) {
+    case 1:
+      priority.textContent = "Medium";
+      break;
+    case 2:
+      priority.textContent = "High";
+      break;
+    default:
+      priority.textContent = "Low";
+      break;
+  }
   subheading.appendChild(priority);
+
   if (obj.dueDate) {
     const dueDate = createDiv("due-date", obj.dueDate);
     subheading.appendChild(dueDate);
@@ -127,15 +139,12 @@ function createDomCard(obj, index) {
   // Sets a different class depending on the priority
   switch (obj.priority) {
     case 1:
-      priority.textContent = "Medium";
       todoCard.classList.add("priority-medium");
       break;
     case 2:
-      priority.textContent = "High";
       todoCard.classList.add("priority-high");
       break;
     default:
-      priority.textContent = "Low";
       todoCard.classList.add("priority-low");
       break;
   }
@@ -235,6 +244,7 @@ function changeStatus(e) {
         break;
     }
     renderTodos();
+    showDetails(document.querySelector(`[data-index="${cardIndex}"]`))
   }
 }
 
@@ -400,6 +410,10 @@ function renderEditingForm(targetCard, item, index) {
   ul.appendChild(editNotes);
 
   // Buttons
+  const deleteBtn = document.createElement("button");
+  deleteBtn.setAttribute("type", "button");
+  deleteBtn.textContent = "Delete";
+  ul.appendChild(deleteBtn);
   const cancelBtn = document.createElement("button");
   cancelBtn.setAttribute("type", "button");
   cancelBtn.textContent = "Cancel";
@@ -414,9 +428,15 @@ function renderEditingForm(targetCard, item, index) {
     e.preventDefault();
     submitEditForm(item, index);
   });
+
   cancelBtn.addEventListener("click", function (e) {
     e.stopPropagation();
     cancelEditForm(index);
+  });
+
+  deleteBtn.addEventListener("click", function (e) {
+    e.stopPropagation();
+    deleteItem(index);
   });
 }
 
@@ -442,9 +462,13 @@ function submitEditForm(item, index) {
 }
 
 function cancelEditForm(index) {
-  debugger;
   renderTodos();
   showDetails(document.querySelector(`[data-index="${index}"]`));
+}
+
+function deleteItem(index) {
+  myToDo.deleteItem(index);
+  renderTodos();
 }
 
 // ---------------------------------

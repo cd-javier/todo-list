@@ -6,7 +6,7 @@ function TodoList() {
 
   // To load the local storage
   function loadList() {
-      if (localStorage.todoList) {
+      if (localStorage.todoList && JSON.parse(localStorage.todoList).length > 0) {
           todoArr = JSON.parse(localStorage.getItem("todoList"))
           todoArr.forEach((item) => {Object.setPrototypeOf(item, new TodoItem)})
       } else {
