@@ -37,12 +37,8 @@ function createDiv(cssClass, text) {
   return div;
 }
 
-// Function to create each To Do item card
-function createDomCard(obj, index) {
-  const todoCard = createDiv("todo-item");
-  todoCard.dataset.status = obj.status;
-  todoCard.dataset.index = index;
-
+// Function to create Todo Do Item card contents
+function createCardContent(obj, index) {
   // Heading
   const heading = createDiv("todo-heading");
   const title = createDiv("title", obj.name);
@@ -51,31 +47,15 @@ function createDomCard(obj, index) {
     const category = createDiv("category", obj.category);
     heading.appendChild(category);
   }
-  todoCard.appendChild(heading);
 
   // Subheading
   const subheading = createDiv("todo-subheading");
   const priority = createDiv("priority");
-  switch (obj.priority) {
-    case 1:
-      priority.textContent = "Medium";
-      todoCard.classList.add("priority-medium");
-      break;
-    case 2:
-      priority.textContent = "High";
-      todoCard.classList.add("priority-high");
-      break;
-    default:
-      priority.textContent = "Low";
-      todoCard.classList.add("priority-low");
-      break;
-  }
   subheading.appendChild(priority);
   if (obj.dueDate) {
     const dueDate = createDiv("due-date", obj.dueDate);
     subheading.appendChild(dueDate);
   }
-  todoCard.appendChild(subheading);
 
   //Details
   const details = createDiv("todo-details");
@@ -135,7 +115,35 @@ function createDomCard(obj, index) {
   buttons.append(editBtn, todoBtn, doingBtn, doneBtn);
   details.appendChild(buttons);
 
-  todoCard.appendChild(details);
+  return [heading, subheading, details];
+}
+
+// Function to create each To Do item card
+function createDomCard(obj, index) {
+  const todoCard = createDiv("todo-item");
+  todoCard.dataset.status = obj.status;
+  todoCard.dataset.index = index;
+
+  // Sets a different class depending on the priority
+  switch (obj.priority) {
+    case 1:
+      priority.textContent = "Medium";
+      todoCard.classList.add("priority-medium");
+      break;
+    case 2:
+      priority.textContent = "High";
+      todoCard.classList.add("priority-high");
+      break;
+    default:
+      priority.textContent = "Low";
+      todoCard.classList.add("priority-low");
+      break;
+  }
+
+  const todoContent = createCardContent(obj, index);
+  todoContent.forEach((item) => {
+    todoCard.appendChild(item);
+  });
 
   return todoCard;
 }
