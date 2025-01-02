@@ -238,3 +238,7 @@ button {
 .modal-buttons button {
   flex: 1;
 }
+
+.new-btn {
+  width: 100%;
+}

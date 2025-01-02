@@ -10,6 +10,7 @@ function TodoList() {
           todoArr = JSON.parse(localStorage.getItem("todoList"))
           todoArr.forEach((item) => {Object.setPrototypeOf(item, new TodoItem)})
       } else {
+        // If there isn't local storage, gives sample items
         createTodoItem(
             "Submit Project Report",
             "Complete and submit the final project report to the team leader. Ensure all data is accurate and conclusions are clear.",
