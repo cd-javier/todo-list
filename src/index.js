@@ -13,7 +13,7 @@ const DomNodes = (function () {
 const myToDo = TodoList();
 myToDo.createTodoItem(
   "do something",
-  "you have to do something",
+  "You have to do something",
   "10-20-20",
   "work",
   0,
@@ -25,7 +25,7 @@ myToDo.createTodoItem(
 );
 myToDo.createTodoItem(
   "do something 2",
-  "you have to do something",
+  "You have to do something",
   "10-20-20",
   "play",
   1,
@@ -136,23 +136,13 @@ function createDomCard(obj, index) {
   editBtn.classList.add("edit-btn");
   editBtn.textContent = "Edit";
 
-  const prevBtn = document.createElement("button");
-  const nextBtn = document.createElement("button");
-  switch (obj.status) {
-    case "todo":
-      prevBtn.textContent = "Doing";
-      nextBtn.textContent = "Done";
-      break;
-    case "doing":
-      prevBtn.textContent = "To Do";
-      nextBtn.textContent = "Done";
-      break;
-    case "done":
-      prevBtn.textContent = "To Do";
-      nextBtn.textContent = "Doing";
-      break;
-  }
-  buttons.append(editBtn, prevBtn, nextBtn);
+  const todoBtn = document.createElement("button");
+  todoBtn.textContent = "❎"
+  const doingBtn = document.createElement("button");
+  doingBtn.textContent = "☑️"
+  const doneBtn = document.createElement("button")
+  doneBtn.textContent = "✅"
+  buttons.append(editBtn, todoBtn, doingBtn, doneBtn);
   details.appendChild(buttons);
 
   todoCard.appendChild(details);
@@ -181,14 +171,18 @@ function renderTodos() {
   });
 }
 
-function showDetails(e) {
-  const targetCard = e.target.closest(".todo-item");
-  if (targetCard) {
+function showDetails(targetCard) {
     const cardDetails = targetCard.getElementsByClassName("todo-details");
     cardDetails[0].classList.toggle("hidden");
+}
+
+function showDetailsListener(e) {
+  const targetCard = e.target.closest(".todo-item");
+  if (targetCard) {
+    showDetails(targetCard)
   }
 }
 
 renderTodos();
 
-document.addEventListener("click", showDetails);
+document.addEventListener("click", showDetailsListener);

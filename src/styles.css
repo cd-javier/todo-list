@@ -146,7 +146,7 @@ h2 {
 
 .buttons {
   display: grid;
-  grid-template: "edit edit" ". .";
+  grid-template: "edit edit edit" ". . .";
   gap: 0.5rem;
 }
 
