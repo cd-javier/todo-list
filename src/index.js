@@ -2,7 +2,7 @@ import "./styles.css";
 import { TodoList } from "./todolist";
 
 const DomNodes = (function () {
-  const wrapper = document.getElementById("wrapper")
+  const wrapper = document.getElementById("wrapper");
   const todoList = document.getElementById("todo");
   const doingList = document.getElementById("doing");
   const doneList = document.getElementById("done");
@@ -100,7 +100,7 @@ function createDomCard(obj, index) {
 
   //Details
   const details = createDiv("todo-details");
-  // details.classList.add("hidden")
+  details.classList.add("hidden");
 
   // Checklist
   if (obj.checklist.length !== 0) {
@@ -181,4 +181,12 @@ function renderTodos() {
   });
 }
 
+function showDetails(e) {
+  const targetCard = e.target.closest(".todo-item");
+  const cardDetails = targetCard.getElementsByClassName("todo-details");
+  cardDetails[0].classList.toggle("hidden")
+}
+
 renderTodos();
+
+document.addEventListener("click", showDetails);
