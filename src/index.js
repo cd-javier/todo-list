@@ -127,7 +127,9 @@ function createCardContent(obj, index) {
   buttons.append(editBtn, todoBtn, doingBtn, doneBtn);
   details.appendChild(buttons);
 
-  return [heading, subheading, details];
+  const expand = createDiv("expand-collapse", "see more");
+
+  return [heading, subheading, details, expand];
 }
 
 // Function to create each To Do item card
@@ -214,13 +216,25 @@ function renderTodos() {
 // Function to open up the card and show the details
 function showDetails(targetCard) {
   const cardDetails = targetCard.querySelector(".todo-details");
+  const expandCollapse = targetCard.querySelector(".expand-collapse");
+  if (cardDetails.classList.contains("hidden")){
+    expandCollapse.textContent = "see less"
+  } else {
+    expandCollapse.textContent = "see more"
+  }
   cardDetails.classList.toggle("hidden");
 }
 
 // Applies showDetails in an event listener
 function showDetailsListener(e) {
   const targetCard = e.target.closest(".todo-item");
-  if (targetCard && !targetCard.dataset.editing) {
+  const targetExpandCollapse = e.target.closest(".expand-collapse");
+  const heading = e.target.closest(".todo-heading");
+  if (
+    targetCard &&
+    !targetCard.dataset.editing &&
+    (targetExpandCollapse || heading)
+  ) {
     showDetails(targetCard);
   }
 }
@@ -244,7 +258,7 @@ function changeStatus(e) {
         break;
     }
     renderTodos();
-    showDetails(document.querySelector(`[data-index="${cardIndex}"]`))
+    showDetails(document.querySelector(`[data-index="${cardIndex}"]`));
   }
 }
 
@@ -317,7 +331,7 @@ function renderEditingForm(targetCard, item, index) {
   editNameInput.value = item.name;
   editName.appendChild(editNameInput);
   const editNameSpan = document.createElement("span");
-  editName.appendChild(editNameSpan)
+  editName.appendChild(editNameSpan);
   ul.appendChild(editName);
 
   // Description
@@ -469,7 +483,7 @@ function cancelEditForm(index) {
 }
 
 function deleteItem(index) {
-  if(confirm("Are you sure you want to delete this?")){
+  if (confirm("Are you sure you want to delete this?")) {
     myToDo.deleteItem(index);
     renderTodos();
   }
