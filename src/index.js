@@ -129,6 +129,16 @@ function renderTodos() {
     .getList()
     .map((elm, index) => createDomCard(elm, index));
 
+  const todoHeading = document.createElement("h2")
+  todoHeading.textContent = "To Do"
+  DomNodes.todoList.appendChild(todoHeading)
+  const doingHeading = document.createElement("h2")
+  doingHeading.textContent = "Doing"
+  DomNodes.doingList.appendChild(doingHeading)
+  const doneHeading = document.createElement("h2")
+  doneHeading.textContent = "Done"
+  DomNodes.doneList.appendChild(doneHeading)
+
   domArr.forEach((card) => {
     switch (card.dataset.status) {
       case "todo":
