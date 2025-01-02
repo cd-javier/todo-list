@@ -469,8 +469,10 @@ function cancelEditForm(index) {
 }
 
 function deleteItem(index) {
-  myToDo.deleteItem(index);
-  renderTodos();
+  if(confirm("Are you sure you want to delete this?")){
+    myToDo.deleteItem(index);
+    renderTodos();
+  }
 }
 
 // ---------------------------------
