@@ -12,35 +12,56 @@ const DomNodes = (function () {
 
 const myToDo = TodoList();
 myToDo.createTodoItem(
-  "do something",
-  "You have to do something",
-  "10-20-20",
-  "work",
-  0,
-  "no notes",
+  "Submit Project Report",
+  "Complete and submit the final project report to the team leader. Ensure all data is accurate and conclusions are clear.",
+  "01-05-25",
+  "Work",
+  2,
+  "Double-check for any last-minute feedback from the team before submitting.",
   [
-    { name: "thing", completed: false },
-    { name: "other thing", completed: true },
+    { name: "Review all data and conclusions", completed: false },
+    {
+      name: "Proofread the document for grammar and clarity",
+      completed: false,
+    },
+    {
+      name: "Format report according to company guidelines",
+      completed: false,
+    },
+    {
+      name: "Submit to team leader",
+      completed: false,
+    },
+    {
+      name: "Confirm submission is received",
+      completed: false,
+    },
   ]
 );
 myToDo.createTodoItem(
-  "do something 2",
-  "You have to do something",
-  "10-20-20",
-  "play",
-  1,
-  "here are a few notes"
+  "Buy Groceries for the Week",
+  "Purchase all the groceries needed for the upcoming week. Focus on fresh produce, meat, and pantry essentials.",
+  "01-03-2025",
+  "Home",
+  0,
+  "Use the grocery list app to check off items as you buy them.",
+  [
+    { name: "Apples and bananas", completed: false },
+    { name: "Chicken breasts", completed: false },
+    { name: "Spinach and lettuce", completed: false },
+    { name: "Bread and pasta", completed: false },
+    { name: "Milk and eggs", completed: false },
+  ]
 );
 myToDo.createTodoItem(
-  "do something 2",
-  "you have to do something",
-  "10-20-20",
-  "home",
-  2
+  "Call the Doctor's Office",
+  "Call to schedule an appointment for a routine check-up and to get a prescription refill.",
+  "01-04-25",
+  "Health",
+  1,
+  "Be sure to mention the need for a prescription refill during the call."
 );
-myToDo.getList()[1].addChecklistItem("do something");
-myToDo.getList()[1].addChecklistItem("do something 2");
-myToDo.getList()[1].checklist[1].toggleComplete();
+
 myToDo.getList()[1].setDoing();
 myToDo.getList()[2].setDone();
 
@@ -92,16 +113,15 @@ function createDomCard(obj, index) {
   }
   todoCard.appendChild(subheading);
 
-  // Description
-  if (obj.description) {
-    const description = createDiv("description", obj.description);
-    todoCard.appendChild(description);
-  }
-
   //Details
   const details = createDiv("todo-details");
   details.classList.add("hidden");
 
+  // Description
+  if (obj.description) {
+    const description = createDiv("description", obj.description);
+    details.appendChild(description);
+  }
   // Checklist
   if (obj.checklist.length !== 0) {
     const checklist = createDiv("checklist");
@@ -137,11 +157,17 @@ function createDomCard(obj, index) {
   editBtn.textContent = "Edit";
 
   const todoBtn = document.createElement("button");
-  todoBtn.textContent = "❎"
+  todoBtn.textContent = "❎";
+  todoBtn.dataset.action = "todo";
+  todoBtn.classList.add("action-btn");
   const doingBtn = document.createElement("button");
-  doingBtn.textContent = "☑️"
-  const doneBtn = document.createElement("button")
-  doneBtn.textContent = "✅"
+  doingBtn.textContent = "☑️";
+  doingBtn.dataset.action = "doing";
+  doingBtn.classList.add("action-btn");
+  const doneBtn = document.createElement("button");
+  doneBtn.textContent = "✅";
+  doneBtn.dataset.action = "done";
+  doneBtn.classList.add("action-btn");
   buttons.append(editBtn, todoBtn, doingBtn, doneBtn);
   details.appendChild(buttons);
 
@@ -171,18 +197,47 @@ function renderTodos() {
   });
 }
 
+// Function to clear the display
+function clearTodos() {
+  DomNodes.todoList.textContent = "";
+  DomNodes.doingList.textContent = "";
+  DomNodes.doneList.textContent = "";
+}
 function showDetails(targetCard) {
-    const cardDetails = targetCard.getElementsByClassName("todo-details");
-    cardDetails[0].classList.toggle("hidden");
+  const cardDetails = targetCard.getElementsByClassName("todo-details");
+  cardDetails[0].classList.toggle("hidden");
 }
 
 function showDetailsListener(e) {
   const targetCard = e.target.closest(".todo-item");
   if (targetCard) {
-    showDetails(targetCard)
+    showDetails(targetCard);
+  }
+}
+
+function changeStatus(e) {
+  const targetCard = e.target.closest(".todo-item");
+  const cardIndex = targetCard.dataset.index;
+  const targetBtn = e.target.closest(".action-btn");
+
+  if (targetBtn) {
+    switch (targetBtn.dataset.action) {
+      case "todo":
+        myToDo.getList()[cardIndex].setToDo();
+        break;
+        case "doing":
+        myToDo.getList()[cardIndex].setDoing();
+        break;
+        case "done":
+        myToDo.getList()[cardIndex].setDone();
+        break;
+    }
+    clearTodos();
+    renderTodos();
   }
 }
 
 renderTodos();
 
 document.addEventListener("click", showDetailsListener);
+document.addEventListener("click", changeStatus);

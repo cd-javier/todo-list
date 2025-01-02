@@ -88,7 +88,8 @@ h2 {
 .priority,
 .due-date,
 .checklist,
-.notes {
+.notes,
+.description {
   font-size: 0.75rem;
 }
 
@@ -107,6 +108,7 @@ h2 {
 .priority::before {
   content: "Priority: ";
 }
+
 
 .checklist,
 .notes {
