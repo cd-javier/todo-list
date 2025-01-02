@@ -5,10 +5,63 @@ function TodoList() {
   let todoArr = [];
 
   // To load the local storage
-  //
-  // if(localStorage.todoList) {
-  //     todoArr = JSON.parse(localStorage.todoList)
-  // }
+  function loadList() {
+      if (localStorage.todoList) {
+          todoArr = JSON.parse(localStorage.getItem("todoList"))
+          todoArr.forEach((item) => {Object.setPrototypeOf(item, new TodoItem)})
+      } else {
+        createTodoItem(
+            "Submit Project Report",
+            "Complete and submit the final project report to the team leader. Ensure all data is accurate and conclusions are clear.",
+            "01-05-25",
+            "Work",
+            2,
+            "Double-check for any last-minute feedback from the team before submitting.",
+            [
+              { name: "Review all data and conclusions", completed: false },
+              {
+                name: "Proofread the document for grammar and clarity",
+                completed: false,
+              },
+              {
+                name: "Format report according to company guidelines",
+                completed: false,
+              },
+              {
+                name: "Submit to team leader",
+                completed: false,
+              },
+              {
+                name: "Confirm submission is received",
+                completed: false,
+              },
+            ]
+          );
+          createTodoItem(
+            "Buy Groceries for the Week",
+            "Purchase all the groceries needed for the upcoming week. Focus on fresh produce, meat, and pantry essentials.",
+            "01-03-2025",
+            "Home",
+            0,
+            "Use the grocery list app to check off items as you buy them.",
+            [
+              { name: "Apples and bananas", completed: false },
+              { name: "Chicken breasts", completed: false },
+              { name: "Spinach and lettuce", completed: false },
+              { name: "Bread and pasta", completed: false },
+              { name: "Milk and eggs", completed: false },
+            ]
+          );
+          createTodoItem(
+            "Call the Doctor's Office",
+            "Call to schedule an appointment for a routine check-up and to get a prescription refill.",
+            "01-04-25",
+            "Health",
+            1,
+            "Be sure to mention the need for a prescription refill during the call."
+          );
+      }
+  }
 
   // To get the list without being able to modify it
   function getList() {
@@ -101,7 +154,7 @@ function TodoList() {
     todoArr.splice(index, 1);
   }
 
-  return { getList, getListItem, createTodoItem, deleteItem };
+  return { loadList, getList, getListItem, createTodoItem, deleteItem };
 }
 
 export { TodoList };

@@ -11,59 +11,6 @@ const DomNodes = (function () {
 })();
 
 const myToDo = TodoList();
-myToDo.createTodoItem(
-  "Submit Project Report",
-  "Complete and submit the final project report to the team leader. Ensure all data is accurate and conclusions are clear.",
-  "01-05-25",
-  "Work",
-  2,
-  "Double-check for any last-minute feedback from the team before submitting.",
-  [
-    { name: "Review all data and conclusions", completed: false },
-    {
-      name: "Proofread the document for grammar and clarity",
-      completed: false,
-    },
-    {
-      name: "Format report according to company guidelines",
-      completed: false,
-    },
-    {
-      name: "Submit to team leader",
-      completed: false,
-    },
-    {
-      name: "Confirm submission is received",
-      completed: false,
-    },
-  ]
-);
-myToDo.createTodoItem(
-  "Buy Groceries for the Week",
-  "Purchase all the groceries needed for the upcoming week. Focus on fresh produce, meat, and pantry essentials.",
-  "01-03-2025",
-  "Home",
-  0,
-  "Use the grocery list app to check off items as you buy them.",
-  [
-    { name: "Apples and bananas", completed: false },
-    { name: "Chicken breasts", completed: false },
-    { name: "Spinach and lettuce", completed: false },
-    { name: "Bread and pasta", completed: false },
-    { name: "Milk and eggs", completed: false },
-  ]
-);
-myToDo.createTodoItem(
-  "Call the Doctor's Office",
-  "Call to schedule an appointment for a routine check-up and to get a prescription refill.",
-  "01-04-25",
-  "Health",
-  1,
-  "Be sure to mention the need for a prescription refill during the call."
-);
-
-myToDo.getList()[1].setDoing();
-myToDo.getList()[2].setDone();
 
 // Helper function to create divs more easily
 function createDiv(cssClass, text) {
@@ -225,10 +172,10 @@ function changeStatus(e) {
       case "todo":
         myToDo.getList()[cardIndex].setToDo();
         break;
-        case "doing":
+      case "doing":
         myToDo.getList()[cardIndex].setDoing();
         break;
-        case "done":
+      case "done":
         myToDo.getList()[cardIndex].setDone();
         break;
     }
@@ -237,7 +184,19 @@ function changeStatus(e) {
   }
 }
 
-renderTodos();
+function init() {
+  myToDo.loadList();
+  renderTodos();
+}
+
+function finalize() {
+  localStorage.todoList = JSON.stringify(myToDo.getList());
+}
+
 
 document.addEventListener("click", showDetailsListener);
 document.addEventListener("click", changeStatus);
+
+document.addEventListener("DOMContentLoaded", init);
+window.addEventListener("unload", finalize);
+
