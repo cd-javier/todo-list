@@ -316,6 +316,8 @@ function renderEditingForm(targetCard, item, index) {
   editNameInput.setAttribute("required", true);
   editNameInput.value = item.name;
   editName.appendChild(editNameInput);
+  const editNameSpan = document.createElement("span");
+  editName.appendChild(editNameSpan)
   ul.appendChild(editName);
 
   // Description

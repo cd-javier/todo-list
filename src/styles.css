@@ -239,10 +239,32 @@ form select:focus {
   border: 1px solid var(--primary);
 }
 
+form input:user-invalid {
+  border: 1px solid var(--priority-high);
+}
+
+form input:user-invalid + span {
+  visibility: visible;
+}
+
+form input + span {
+  visibility: hidden;
+  position:absolute;
+  top: 100%;
+  right: 0;
+
+}
+form input + span::after {
+  content: "* Item name is required";
+  font-size: 0.75rem;
+  color: var(--priority-high)
+}
+
 form li {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  position: relative;
 }
 
 form textarea {
