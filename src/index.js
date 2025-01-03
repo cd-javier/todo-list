@@ -82,28 +82,29 @@ function createCardContent(obj, index) {
     const description = createDiv("description", obj.description);
     details.appendChild(description);
   }
-  // Checklist
-  // if (obj.checklist.length !== 0) {
-  //   const checklist = createDiv("checklist");
-  //   const ul = document.createElement("ul");
-  //   obj.checklist.forEach((item, j) => {
-  //     const li = document.createElement("li");
-  //     const input = document.createElement("input");
-  //     input.setAttribute("type", "checkbox");
-  //     if (item.completed) {
-  //       input.setAttribute("checked", true);
-  //     }
-  //     input.id = index + "-" + j;
-  //     const label = document.createElement("label");
-  //     label.setAttribute("for", index + "-" + j);
-  //     label.textContent = item.name;
-  //     li.append(input, label);
 
-  //     ul.appendChild(li);
-  //   });
-  //   checklist.appendChild(ul);
-  //   details.appendChild(checklist);
-  // }
+  // Checklist
+  if (obj.checklist.length !== 0) {
+    const checklist = createDiv("checklist");
+    const ul = document.createElement("ul");
+    obj.checklist.forEach((item, j) => {
+      const li = document.createElement("li");
+      const input = document.createElement("input");
+      input.setAttribute("type", "checkbox");
+      if (item.completed) {
+        input.setAttribute("checked", true);
+      }
+      input.id = index + "-" + j;
+      const label = document.createElement("label");
+      label.setAttribute("for", index + "-" + j);
+      label.textContent = item.name;
+      li.append(input, label);
+
+      ul.appendChild(li);
+    });
+    checklist.appendChild(ul);
+    details.appendChild(checklist);
+  }
 
   if (obj.notes) {
     const notes = createDiv("notes", obj.notes);
@@ -215,14 +216,17 @@ function renderTodos() {
 
   // Populates the counters
   renderCounters()
+
+  // Adds checkbox listener for checklsits
+  addCheckboxListener()
 }
 
 function renderCounters() {
   DomNodes.todoCounter.textContent = myToDo.getCounter().todo;
   DomNodes.doingCounter.textContent = myToDo.getCounter().doing;
   DomNodes.doneCounter.textContent = myToDo.getCounter().done;
-
 }
+
 // -------------------------------
 //       List Manipulation
 // -------------------------------
@@ -273,6 +277,18 @@ function changeStatus(e) {
     renderTodos();
     showDetails(document.querySelector(`[data-index="${cardIndex}"]`));
   }
+}
+
+function addCheckboxListener() {
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+  checkboxes.forEach((checkbox) => {
+    checkbox.addEventListener("change", () => {
+      let j, i;
+      [i, j] = checkbox.id.split("-")
+      myToDo.getList()[i].checklist[j].toggleComplete()
+    })
+  })
 }
 
 // -------------------------------
