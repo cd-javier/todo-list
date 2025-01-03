@@ -4,22 +4,26 @@ import { format } from "date-fns";
 
 // Selects necessary nodes on the DOM
 const DomNodes = (function () {
-  const wrapper = document.getElementById("wrapper");
   const todoList = document.getElementById("todo");
   const doingList = document.getElementById("doing");
   const doneList = document.getElementById("done");
   const newModal = document.getElementById("new-item-modal");
   const newForm = document.forms["new-item-form"];
   const newCancelBtn = document.getElementById("new-cancel-btn");
+  const todoCounter = document.getElementById("todo-counter")
+  const doingCounter = document.getElementById("doing-counter")
+  const doneCounter = document.getElementById("done-counter")
 
   return {
-    wrapper,
     todoList,
     doingList,
     doneList,
     newModal,
     newForm,
     newCancelBtn,
+    todoCounter,
+    doingCounter,
+    doneCounter,
   };
 })();
 
@@ -208,8 +212,17 @@ function renderTodos() {
         break;
     }
   });
+
+  // Populates the counters
+  renderCounters()
 }
 
+function renderCounters() {
+  DomNodes.todoCounter.textContent = myToDo.getCounter().todo;
+  DomNodes.doingCounter.textContent = myToDo.getCounter().doing;
+  DomNodes.doneCounter.textContent = myToDo.getCounter().done;
+
+}
 // -------------------------------
 //       List Manipulation
 // -------------------------------

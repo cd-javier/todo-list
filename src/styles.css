@@ -15,6 +15,10 @@
 body {
   background-color: var(--bg-neutral);
   color: var(--neutral-black);
+  
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
 }
 
 h1 {
@@ -29,14 +33,27 @@ h2 {
   font-weight: 700;
 }
 
-.wrapper {
+.wrapper,
+.counter-wrapper {
+  width: 100%;
   max-width: 1024px;
-  margin: 2rem auto;
+  margin: 0 auto;
   padding: 0 1rem;
 
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
+}
+
+.wrapper {
+  flex: 1;
+}
+
+.counter-wrapper > * {
+  padding: 1rem;
+  
+  font-weight: 200;
+  text-align: center;
 }
 
 .todo-list {
