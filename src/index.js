@@ -9,10 +9,11 @@ const DomNodes = (function () {
   const doneList = document.getElementById("done");
   const newModal = document.getElementById("new-item-modal");
   const newForm = document.forms["new-item-form"];
+  const newFormChecklist = document.getElementById("checklist-items");
   const newCancelBtn = document.getElementById("new-cancel-btn");
-  const todoCounter = document.getElementById("todo-counter")
-  const doingCounter = document.getElementById("doing-counter")
-  const doneCounter = document.getElementById("done-counter")
+  const todoCounter = document.getElementById("todo-counter");
+  const doingCounter = document.getElementById("doing-counter");
+  const doneCounter = document.getElementById("done-counter");
 
   return {
     todoList,
@@ -20,6 +21,7 @@ const DomNodes = (function () {
     doneList,
     newModal,
     newForm,
+    newFormChecklist,
     newCancelBtn,
     todoCounter,
     doingCounter,
@@ -83,27 +85,27 @@ function createCardContent(obj, index) {
     details.appendChild(description);
   }
   // Checklist
-  // if (obj.checklist.length !== 0) {
-  //   const checklist = createDiv("checklist");
-  //   const ul = document.createElement("ul");
-  //   obj.checklist.forEach((item, j) => {
-  //     const li = document.createElement("li");
-  //     const input = document.createElement("input");
-  //     input.setAttribute("type", "checkbox");
-  //     if (item.completed) {
-  //       input.setAttribute("checked", true);
-  //     }
-  //     input.id = index + "-" + j;
-  //     const label = document.createElement("label");
-  //     label.setAttribute("for", index + "-" + j);
-  //     label.textContent = item.name;
-  //     li.append(input, label);
+  if (obj.checklist.length !== 0) {
+    const checklist = createDiv("checklist");
+    const ul = document.createElement("ul");
+    obj.checklist.forEach((item, j) => {
+      const li = document.createElement("li");
+      const input = document.createElement("input");
+      input.setAttribute("type", "checkbox");
+      if (item.completed) {
+        input.checked = true;
+      }
+      input.id = index + "-" + j;
+      const label = document.createElement("label");
+      label.setAttribute("for", index + "-" + j);
+      label.textContent = item.name;
+      li.append(input, label);
 
-  //     ul.appendChild(li);
-  //   });
-  //   checklist.appendChild(ul);
-  //   details.appendChild(checklist);
-  // }
+      ul.appendChild(li);
+    });
+    checklist.appendChild(ul);
+    details.appendChild(checklist);
+  }
 
   if (obj.notes) {
     const notes = createDiv("notes", obj.notes);
@@ -214,15 +216,60 @@ function renderTodos() {
   });
 
   // Populates the counters
-  renderCounters()
+  renderCounters();
+
+  // Adds checklist input
+  renderChecklistInput();
+
+  // Adds event listener for checkboxes
+  checkboxEventListener()
+}
+
+function checkboxEventListener() {
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+  checkboxes.forEach((checkbox) => {
+    checkbox.addEventListener("change", () => {
+      let j, i;
+      [i, j] = checkbox.id.split("-")
+      myToDo.getList()[i].checklist[j].toggleComplete()
+    })
+  })
 }
 
 function renderCounters() {
   DomNodes.todoCounter.textContent = myToDo.getCounter().todo;
   DomNodes.doingCounter.textContent = myToDo.getCounter().doing;
   DomNodes.doneCounter.textContent = myToDo.getCounter().done;
-
 }
+
+function renderChecklistInput() {
+  DomNodes.newFormChecklist.textContent = "";
+  DomNodes.newFormChecklist.appendChild(
+    createChecklistInput("new-checklist-item")
+  );
+}
+
+function createChecklistInput(id = 0, name = 0, textContent = "", buttonContent = "+") {
+  const checklistInputWrapper = document.createElement("li");
+  const checklistInput = document.createElement("input");
+  if (name) {
+    checklistInput.setAttribute("name", name);
+  }
+  if (id) {
+    checklistInput.id = id;
+  }
+  if (textContent) {
+    checklistInput.value = textContent;
+  }
+  checklistInputWrapper.appendChild(checklistInput);
+
+  const addButton = createDiv("checklist-button", buttonContent);
+  checklistInputWrapper.appendChild(addButton);
+
+  return checklistInputWrapper;
+}
+
 // -------------------------------
 //       List Manipulation
 // -------------------------------
@@ -230,10 +277,10 @@ function renderCounters() {
 function showDetails(targetCard) {
   const cardDetails = targetCard.querySelector(".todo-details");
   const expandCollapse = targetCard.querySelector(".expand-collapse");
-  if (cardDetails.classList.contains("hidden")){
-    expandCollapse.textContent = "see less"
+  if (cardDetails.classList.contains("hidden")) {
+    expandCollapse.textContent = "see less";
   } else {
-    expandCollapse.textContent = "see more"
+    expandCollapse.textContent = "see more";
   }
   cardDetails.classList.toggle("hidden");
 }
@@ -375,7 +422,7 @@ function renderEditingForm(targetCard, item, index) {
 
   // Priority
   const editPriority = document.createElement("li");
-  editPriority.classList.add("select-wrapper")
+  editPriority.classList.add("select-wrapper");
   const editPriorityLabel = document.createElement("label");
   editPriorityLabel.setAttribute("for", "edit-priority");
   editPriorityLabel.textContent = "Priority";
@@ -425,6 +472,20 @@ function renderEditingForm(targetCard, item, index) {
   editDueDateInput.valueAsDate = new Date(format(item.dueDate, "yyyy-MM-dd"));
   editDueDate.appendChild(editDueDateInput);
   ul.appendChild(editDueDate);
+
+  const editChecklist = document.createElement("li");
+  const editChecklistLabel = document.createElement("label");
+  editChecklistLabel.textContent = "Checklist";
+  editChecklist.append(editChecklistLabel);
+  const editChecklistList = document.createElement("ul");
+  editChecklistList.classList.add("checklist-items");
+
+  item.checklist.forEach((item, itemIndex) => {
+    editChecklistList.appendChild(createChecklistInput(0, `${index}-${itemIndex}`, item.name, "-"));
+  });
+
+  editChecklist.appendChild(editChecklistList);
+  ul.appendChild(editChecklist)
 
   // Notes
   const editNotes = document.createElement("li");

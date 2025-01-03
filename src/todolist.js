@@ -10,6 +10,9 @@ function TodoList() {
       todoArr = JSON.parse(localStorage.getItem("todoList"));
       todoArr.forEach((item) => {
         Object.setPrototypeOf(item, new TodoItem());
+        item.checklist.forEach((item => {
+          Object.setPrototypeOf(item, new ChecklistItem());
+        }))
       });
     } else {
       // If there isn't local storage, gives sample items

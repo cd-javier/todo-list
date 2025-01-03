@@ -51,7 +51,7 @@ h2 {
 
 .counter-wrapper > * {
   padding: 1rem;
-  
+
   font-weight: 200;
   text-align: center;
 }
@@ -351,6 +351,33 @@ form textarea {
   font-size: 0.75rem;
 }
 
+.checklist-items li {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+.checklist-items input {
+  flex: 1;
+}
+
+.checklist-button {
+  background-color: var(--primary);
+  color: white;
+  height: 1.5rem;
+  width: 1.5rem;
+  border-radius: 100%;
+
+  padding-bottom: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+}
+
 .modal-buttons {
   display: flex;
   /* flex-direction: column; */
@@ -364,3 +391,4 @@ form textarea {
 .new-btn {
   width: 100%;
 }
+
