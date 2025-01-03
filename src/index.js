@@ -53,13 +53,13 @@ function createCardContent(obj, index) {
   const priority = createDiv("priority");
   switch (obj.priority) {
     case 1:
-      priority.textContent = "Medium";
+      priority.textContent = "🟡 Medium";
       break;
     case 2:
-      priority.textContent = "High";
+      priority.textContent = "🔴 High";
       break;
     default:
-      priority.textContent = "Low";
+      priority.textContent = "🟢 Low";
       break;
   }
   subheading.appendChild(priority);

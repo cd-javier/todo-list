@@ -1,7 +1,7 @@
 @import "../node_modules/modern-normalize/modern-normalize.css";
 
 :root {
-  --bg-neutral: #edeff2;
+  --bg-neutral: hsl(216, 26%, 97%);
   --neutral: #f7f9fc;
   --neutral-black: #06152c;
   --primary: #83b0f5;
@@ -9,6 +9,7 @@
   --priority-high: #f59d83;
   --priority-medium: #f5ed83;
   --priority-low: #b4f583;
+  --shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
 body {
@@ -16,9 +17,16 @@ body {
   color: var(--neutral-black);
 }
 
+h1 {
+  text-align: center;
+  font-weight: 400;
+  font-size: 2.25rem;
+}
+
 h2 {
   padding: 0;
   margin: 0;
+  font-weight: 700;
 }
 
 .wrapper {
@@ -36,6 +44,14 @@ h2 {
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+}
+
+.todo-list > * {
+  box-shadow: var(--shadow);
+}
+
+.todo-list > h2 {
+  box-shadow: none;
 }
 
 .todo-item {
@@ -105,9 +121,8 @@ h2 {
 
 .priority::before {
   content: "Priority: ";
+  color: var(--neutral-black);
 }
-
-
 .checklist,
 .notes {
   position: relative;
@@ -154,6 +169,11 @@ h2 {
   grid-area: edit;
 }
 
+.action-btn {
+  background: none;
+  font-size: 1.5rem;
+}
+
 button {
   appearance: none;
   border: none;
@@ -171,13 +191,13 @@ button {
   padding: 0.25rem;
   margin-top: -0.25rem;
   margin-bottom: -0.5rem;
-  
+
   text-align: center;
   color: var(--primary);
   font-size: 0.75rem;
   font-weight: 100;
 
-  cursor:pointer;
+  cursor: pointer;
 }
 
 .modal {
@@ -218,7 +238,7 @@ form ul {
 }
 
 .todo-item form ul {
-  display:flex;
+  display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
@@ -251,7 +271,8 @@ form select option {
   font-family: inherit;
 }
 
-form select, form select option {
+form select,
+form select option {
   text-rendering: optimizeLegibility;
 }
 
@@ -284,15 +305,14 @@ form input:user-invalid + span {
 
 form input + span {
   visibility: hidden;
-  position:absolute;
+  position: absolute;
   top: 100%;
   right: 0;
-
 }
 form input + span::after {
   content: "* Item name is required";
   font-size: 0.75rem;
-  color: var(--priority-high)
+  color: var(--priority-high);
 }
 
 form li {

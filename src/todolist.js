@@ -14,7 +14,7 @@ function TodoList() {
         createTodoItem(
             "Submit Project Report",
             "Complete and submit the final project report to the team leader. Ensure all data is accurate and conclusions are clear.",
-            "01-05-25",
+            "01-05-2025",
             "Work",
             2,
             "Double-check for any last-minute feedback from the team before submitting.",
@@ -56,7 +56,7 @@ function TodoList() {
           createTodoItem(
             "Call the Doctor's Office",
             "Call to schedule an appointment for a routine check-up and to get a prescription refill.",
-            "01-04-25",
+            "01-04-2025",
             "Health",
             1,
             "Be sure to mention the need for a prescription refill during the call."
